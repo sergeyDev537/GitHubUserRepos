@@ -17,6 +17,8 @@ class ReposAdapter(context: Context) : RecyclerView.Adapter<ReposAdapter.ReposVi
 
     private var context = context
     var listGitHubRepos: List<GitHubRepository> = arrayListOf()
+    var clickRepo: ((GitHubRepository) -> Unit)? = null
+
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ReposViewHolder {
 
@@ -29,6 +31,11 @@ class ReposAdapter(context: Context) : RecyclerView.Adapter<ReposAdapter.ReposVi
 
     override fun onBindViewHolder(holder: ReposViewHolder, position: Int) {
         holder.bind(context, listGitHubRepos[position])
+        holder.containerView.setOnClickListener {
+            clickRepo?.invoke(
+                listGitHubRepos[position]
+            )
+        }
     }
 
     override fun getItemCount(): Int {
@@ -61,11 +68,11 @@ class ReposAdapter(context: Context) : RecyclerView.Adapter<ReposAdapter.ReposVi
         @SuppressLint("SetTextI18n")
         fun bind(context: Context, gitHubRepository: GitHubRepository) {
 
-            Glide.with(context).load(gitHubRepository.owner.avatar_url)
+            Glide.with(context).load(gitHubRepository.owner?.avatar_url)
                 .into(containerView.avatarUser)
 
             containerView.username.text =
-                context.getString(R.string.username) + ": " + gitHubRepository.owner.login
+                context.getString(R.string.username) + ": " + gitHubRepository.owner?.login
             containerView.nameRepo.text =
                 context.getString(R.string.nameRepo) + ": " + gitHubRepository.name
             containerView.createdDate.text =
@@ -73,20 +80,13 @@ class ReposAdapter(context: Context) : RecyclerView.Adapter<ReposAdapter.ReposVi
             containerView.updatedDate.text =
                 context.getString(R.string.updatedDate) + ": " + gitHubRepository.updated_at
 
-            if (gitHubRepository.description == null){
+            if (gitHubRepository.description == null) {
                 containerView.description.visibility = View.GONE
-            }
-            else{
+            } else {
                 containerView.description.visibility = View.VISIBLE
                 containerView.description.text =
                     context.getString(R.string.description) + ": " + gitHubRepository.description
             }
-
-
-
-
         }
-
     }
-
 }
