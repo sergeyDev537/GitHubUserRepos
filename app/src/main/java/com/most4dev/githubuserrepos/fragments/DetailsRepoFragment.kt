@@ -9,6 +9,7 @@ import com.bumptech.glide.Glide
 import com.most4dev.githubuserrepos.R
 import com.most4dev.githubuserrepos.createDescription
 import com.most4dev.githubuserrepos.model.GitHubRepository
+import com.most4dev.githubuserrepos.openURLBrowser
 import com.most4dev.githubuserrepos.showSnackBar
 import kotlinx.android.synthetic.main.fragment_details_repo.*
 
@@ -35,6 +36,12 @@ class DetailsRepoFragment : Fragment() {
                 getString(R.string.not_found_repo)
             )
         }
+
+        fabOpenWeb.setOnClickListener {
+            openURLBrowser(requireContext(), gitHubRepository.html_url)
+            floatingButtonsMenu.close(true)
+        }
+
     }
 
     private fun loadData() {
