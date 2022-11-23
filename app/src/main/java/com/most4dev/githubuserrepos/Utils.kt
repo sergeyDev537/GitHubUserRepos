@@ -30,3 +30,9 @@ fun openURLBrowser(context: Context, url: String){
     i.data = Uri.parse(url)
     context.startActivity(i)
 }
+
+fun replaceValue(stringDefault: String): String{
+    //https://api.github.com/repos/sergey-saskovec/AcquaintanceApp/{archive_format}{/ref}
+    var str1 = stringDefault.substring(0, stringDefault.length-6)
+    return str1.replace("{archive_format}", "zipball")
+}

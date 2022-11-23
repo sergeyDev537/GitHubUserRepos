@@ -26,6 +26,10 @@
     <string name="download_repo">Download</string>
     <string name="not_found_repo">Not found repository</string>
 
+    <!--DOWNLOAD REPOSITORY-->
+    <string name="downloading_file">Downloading file…</string>
+    <string name="file_downloaded">File downloaded</string>
+
     <!--CONTENT DESCRIPTION-->
     <string name="cd_image_button_search">cd_image_button_search</string>
     <string name="cd_image_avatar_image">cd_image_avatar_image</string>
