@@ -1,3 +1,23 @@
 <resources>
     <string name="app_name">GitHubUserRepos</string>
+    
+    <!--TITLE FRAGMENTS-->
+    <string name="title_search_repositories">Search</string>
+
+    <!--SEARCH FRAGMENTS-->
+    <string name="username">Username</string>
+    <string name="nameRepo">Name repository</string>
+    <string name="createdDate">Date created</string>
+    <string name="updatedDate">Date updated</string>
+    <string name="description">Description</string>
+    <string name="error_input_username">Please input correct username</string>
+    <string name="list_repos_empty">List repositories is empty</string>
+
+
+
+
+    <!--CONTENT DESCRIPTION-->
+    <string name="cd_image_button_search">cd_image_button_search</string>
+    <string name="cd_image_avatar_image">cd_image_avatar_image</string>
+
 </resources>
