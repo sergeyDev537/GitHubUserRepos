@@ -79,7 +79,7 @@ data class GitHubRepository(
     @SerializedName("hooks_url")
     val hooks_url: String? = null,
     @SerializedName("html_url")
-    val html_url: String? = null,
+    val html_url: String,
     @SerializedName("id")
     val id: Int? = null,
     @SerializedName("is_template")

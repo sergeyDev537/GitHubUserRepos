@@ -1,6 +1,8 @@
 package com.most4dev.githubuserrepos
 
 import android.content.Context
+import android.content.Intent
+import android.net.Uri
 import android.view.View
 import com.google.android.material.snackbar.Snackbar
 import com.most4dev.githubuserrepos.model.GitHubRepository
@@ -21,4 +23,10 @@ fun Context.createDescription(gitHubRepository: GitHubRepository): String {
             getString(R.string.url_profile) + ": " + gitHubRepository.owner?.url + "\n" +
             getString(R.string.url_repos) + ": " + gitHubRepository.html_url + "\n"
 
+}
+
+fun openURLBrowser(context: Context, url: String){
+    val i = Intent(Intent.ACTION_VIEW)
+    i.data = Uri.parse(url)
+    context.startActivity(i)
 }
