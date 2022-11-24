@@ -8,15 +8,16 @@ import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.most4dev.githubuserrepos.GitHubUserReposApp
-import com.most4dev.githubuserrepos.R
 import com.most4dev.githubuserrepos.adapters.ReposDownloadedAdapter
+import com.most4dev.githubuserrepos.databinding.FragmentDownloadedReposBinding
 import com.most4dev.githubuserrepos.viewModels.DatabaseModelFactory
 import com.most4dev.githubuserrepos.viewModels.DatabaseViewModel
-import kotlinx.android.synthetic.main.fragment_downloaded_repos.*
 
 class DownloadedReposFragment : Fragment() {
 
     private lateinit var reposDownloadedAdapter: ReposDownloadedAdapter
+    private var _binding: FragmentDownloadedReposBinding? = null
+    private val binding get() = _binding!!
     private val databaseViewModel: DatabaseViewModel by viewModels {
         DatabaseModelFactory((requireActivity().application as GitHubUserReposApp).repository)
     }
@@ -24,8 +25,9 @@ class DownloadedReposFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.fragment_downloaded_repos, container, false)
+    ): View {
+        _binding = FragmentDownloadedReposBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -33,13 +35,13 @@ class DownloadedReposFragment : Fragment() {
         createAdapter()
         databaseViewModel.listDownloadedRepos.observe(viewLifecycleOwner){
             if (it.isEmpty()){
-                recyclerDownloadedRepos.visibility = View.GONE
-                messageListEmpty.visibility = View.VISIBLE
+                binding.recyclerDownloadedRepos.visibility = View.GONE
+                binding.messageListEmpty.visibility = View.VISIBLE
             }
             else{
                 reposDownloadedAdapter.setItems(it)
-                recyclerDownloadedRepos.visibility = View.VISIBLE
-                messageListEmpty.visibility = View.GONE
+                binding.recyclerDownloadedRepos.visibility = View.VISIBLE
+                binding.messageListEmpty.visibility = View.GONE
             }
 
         }
@@ -47,7 +49,12 @@ class DownloadedReposFragment : Fragment() {
 
     private fun createAdapter() {
         reposDownloadedAdapter = ReposDownloadedAdapter(requireContext())
-        recyclerDownloadedRepos.layoutManager = LinearLayoutManager(context)
-        recyclerDownloadedRepos.adapter = reposDownloadedAdapter
+        binding.recyclerDownloadedRepos.layoutManager = LinearLayoutManager(context)
+        binding.recyclerDownloadedRepos.adapter = reposDownloadedAdapter
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 }
