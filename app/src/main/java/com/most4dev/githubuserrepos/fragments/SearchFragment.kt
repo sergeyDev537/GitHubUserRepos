@@ -7,7 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.most4dev.githubuserrepos.MainActivity
+import com.most4dev.githubuserrepos.activities.MainActivity
 import com.most4dev.githubuserrepos.R
 import com.most4dev.githubuserrepos.adapters.ReposAdapter
 import com.most4dev.githubuserrepos.showSnackBar

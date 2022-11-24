@@ -8,7 +8,7 @@
     <fragment
         android:id="@+id/navigation_search_repositories"
         android:name="com.most4dev.githubuserrepos.fragments.SearchFragment"
-        android:label="fragment_search"
+        android:label="@string/title_search_repositories"
         tools:layout="@layout/fragment_search" >
         <action
             android:id="@+id/action_navigation_search_repositories_to_detailsRepoFragment"
@@ -17,7 +17,12 @@
     <fragment
         android:id="@+id/detailsRepoFragment"
         android:name="com.most4dev.githubuserrepos.fragments.DetailsRepoFragment"
-        android:label="fragment_details_repo"
+        android:label="@string/title_details_repositories"
         tools:layout="@layout/fragment_details_repo" />
+    <fragment
+        android:id="@+id/navigation_downloaded_repositories"
+        android:name="com.most4dev.githubuserrepos.fragments.DownloadedReposFragment"
+        android:label="@string/title_downloaded_repositories"
+        tools:layout="@layout/fragment_downloaded_repos" />
 
 </navigation>

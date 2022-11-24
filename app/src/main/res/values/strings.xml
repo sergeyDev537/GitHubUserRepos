@@ -3,6 +3,8 @@
 
     <!--TITLE FRAGMENTS-->
     <string name="title_search_repositories">Search</string>
+    <string name="title_downloaded_repositories">Download</string>
+    <string name="title_details_repositories">Details</string>
 
     <!--SEARCH FRAGMENTS-->
     <string name="username">Username</string>
@@ -29,9 +31,15 @@
     <!--DOWNLOAD REPOSITORY-->
     <string name="downloading_file">Downloading file…</string>
     <string name="file_downloaded">File downloaded</string>
+    <string name="author">Author</string>
+
+    <!--LIST REPOSITORIES-->
+    <string name="list_repositories_empty">List repositories is empty</string>
 
     <!--CONTENT DESCRIPTION-->
     <string name="cd_image_button_search">cd_image_button_search</string>
     <string name="cd_image_avatar_image">cd_image_avatar_image</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 </resources>

@@ -9,24 +9,21 @@ import androidx.annotation.LayoutRes
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.most4dev.githubuserrepos.R
-import com.most4dev.githubuserrepos.model.GitHubRepository
+import com.most4dev.githubuserrepos.model.RepositoryModel
 import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.main.item_repository.view.*
 
-class ReposAdapter(context: Context) : RecyclerView.Adapter<ReposAdapter.ReposViewHolder>() {
+class ReposAdapter(private var context: Context) : RecyclerView.Adapter<ReposAdapter.ReposViewHolder>() {
 
-    private var context = context
-    var listGitHubRepos: List<GitHubRepository> = arrayListOf()
-    var clickRepo: ((GitHubRepository) -> Unit)? = null
+    var listGitHubRepos: List<RepositoryModel> = arrayListOf()
+    var clickRepo: ((RepositoryModel) -> Unit)? = null
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ReposViewHolder {
-
         return ReposLayoutHolder(
-            R.layout.item_repository,
+            R.layout.item_search_repository,
             parent
         )
-
     }
 
     override fun onBindViewHolder(holder: ReposViewHolder, position: Int) {
@@ -43,7 +40,7 @@ class ReposAdapter(context: Context) : RecyclerView.Adapter<ReposAdapter.ReposVi
     }
 
     @SuppressLint("NotifyDataSetChanged")
-    fun setItems(list: List<GitHubRepository>) {
+    fun setItems(list: List<RepositoryModel>) {
         listGitHubRepos = list
         notifyDataSetChanged()
     }
@@ -66,7 +63,7 @@ class ReposAdapter(context: Context) : RecyclerView.Adapter<ReposAdapter.ReposVi
     ), LayoutContainer {
 
         @SuppressLint("SetTextI18n")
-        fun bind(context: Context, gitHubRepository: GitHubRepository) {
+        fun bind(context: Context, gitHubRepository: RepositoryModel) {
 
             Glide.with(context).load(gitHubRepository.owner?.avatar_url)
                 .into(containerView.avatarUser)

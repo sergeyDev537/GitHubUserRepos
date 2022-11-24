@@ -5,13 +5,13 @@ import android.content.Intent
 import android.net.Uri
 import android.view.View
 import com.google.android.material.snackbar.Snackbar
-import com.most4dev.githubuserrepos.model.GitHubRepository
+import com.most4dev.githubuserrepos.model.RepositoryModel
 
 fun View.showSnackBar(msg: String) {
     Snackbar.make(this, msg, Snackbar.LENGTH_SHORT).show()
 }
 
-fun Context.createDescription(gitHubRepository: GitHubRepository): String {
+fun Context.createDescription(gitHubRepository: RepositoryModel): String {
     return getString(R.string.id_repo) + ": " + gitHubRepository.id + "\n" +
             getString(R.string.node_id) + ": " + gitHubRepository.node_id + "\n" +
             getString(R.string.language) + ": " + gitHubRepository.language + "\n" +
@@ -32,7 +32,6 @@ fun openURLBrowser(context: Context, url: String){
 }
 
 fun replaceValue(stringDefault: String): String{
-    //https://api.github.com/repos/sergey-saskovec/AcquaintanceApp/{archive_format}{/ref}
-    var str1 = stringDefault.substring(0, stringDefault.length-6)
+    val str1 = stringDefault.substring(0, stringDefault.length-6)
     return str1.replace("{archive_format}", "zipball")
 }
