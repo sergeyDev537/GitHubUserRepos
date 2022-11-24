@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main_navigation"
+    app:startDestination="@id/navigation_search_repositories">
+
+    <fragment
+        android:id="@+id/navigation_search_repositories"
+        android:name="com.most4dev.githubuserrepos.fragments.SearchFragment"
+        android:label="@string/title_search_repositories"
+        tools:layout="@layout/fragment_search" >
+        <action
+            android:id="@+id/action_navigation_search_repositories_to_detailsRepoFragment"
+            app:destination="@id/detailsRepoFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/detailsRepoFragment"
+        android:name="com.most4dev.githubuserrepos.fragments.DetailsRepoFragment"
+        android:label="@string/title_details_repositories"
+        tools:layout="@layout/fragment_details_repo" />
+    <fragment
+        android:id="@+id/navigation_downloaded_repositories"
+        android:name="com.most4dev.githubuserrepos.fragments.DownloadedReposFragment"
+        android:label="@string/title_downloaded_repositories"
+        tools:layout="@layout/fragment_downloaded_repos" />
+
+</navigation>
