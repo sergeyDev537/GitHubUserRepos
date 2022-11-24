@@ -9,16 +9,18 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.most4dev.githubuserrepos.R
-import kotlinx.android.synthetic.main.activity_main.*
+import com.most4dev.githubuserrepos.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
 
     lateinit var navController: NavController
+    private lateinit var binding: ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         installSplashScreen()
-        setContentView(R.layout.activity_main)
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
         val navHostFragment =
             supportFragmentManager.findFragmentById(R.id.nav_host_fragment_activity_main) as NavHostFragment
@@ -30,7 +32,7 @@ class MainActivity : AppCompatActivity() {
                 R.id.navigation_downloaded_repositories,
             )
         )
-        nav_view.setupWithNavController(navController)
+        binding.navView.setupWithNavController(navController)
         setupActionBarWithNavController(navController, appBarConfiguration)
 
     }

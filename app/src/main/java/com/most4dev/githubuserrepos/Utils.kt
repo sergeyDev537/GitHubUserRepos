@@ -3,9 +3,12 @@ package com.most4dev.githubuserrepos
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
+import android.os.Build.VERSION.SDK_INT
+import android.os.Bundle
 import android.view.View
 import com.google.android.material.snackbar.Snackbar
 import com.most4dev.githubuserrepos.model.RepositoryModel
+import java.io.Serializable
 
 fun View.showSnackBar(msg: String) {
     Snackbar.make(this, msg, Snackbar.LENGTH_SHORT).show()
@@ -38,4 +41,9 @@ fun replaceValue(stringDefault: String): String{
 
 fun getMimeType(archiveFormat: String): String {
     return "application/" + if (archiveFormat == "zipball") "zip" else "tar+gzip"
+}
+
+inline fun <reified T : Serializable> Bundle.serializable(key: String): T? = when {
+    SDK_INT >= 33 -> getSerializable(key, T::class.java)
+    else -> @Suppress("DEPRECATION") getSerializable(key) as? T
 }
