@@ -10,22 +10,24 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.most4dev.githubuserrepos.activities.MainActivity
 import com.most4dev.githubuserrepos.R
 import com.most4dev.githubuserrepos.adapters.ReposAdapter
+import com.most4dev.githubuserrepos.databinding.FragmentSearchBinding
 import com.most4dev.githubuserrepos.showSnackBar
 import com.most4dev.githubuserrepos.viewModels.ReposViewModel
-import kotlinx.android.synthetic.main.fragment_search.*
 
 class SearchFragment : Fragment() {
 
     private lateinit var reposViewModel: ReposViewModel
     private lateinit var reposAdapter: ReposAdapter
+    private var _binding: FragmentSearchBinding? = null
+    private val binding get() = _binding!!
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        val root = inflater.inflate(R.layout.fragment_search, container, false)
+    ): View {
+        _binding = FragmentSearchBinding.inflate(inflater, container, false)
         reposViewModel = ViewModelProvider(this)[ReposViewModel::class.java]
-        return root
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -37,7 +39,7 @@ class SearchFragment : Fragment() {
             value.let { show ->
                 endLoading()
                 if (show.isEmpty()) {
-                    constraintLayoutSearch.showSnackBar(
+                    binding.constraintLayoutSearch.showSnackBar(
                         getString(R.string.list_repos_empty)
                     )
                 } else {
@@ -47,14 +49,14 @@ class SearchFragment : Fragment() {
         }
 
         reposViewModel.listReposError.observe(viewLifecycleOwner) {
-            constraintLayoutSearch.showSnackBar(it)
+            binding.constraintLayoutSearch.showSnackBar(it)
             endLoading()
         }
 
-        buttonSearch.setOnClickListener {
-            if (inputUsername.text.isNotEmpty()) {
+        binding.buttonSearch.setOnClickListener {
+            if (binding.inputUsername.text.isNotEmpty()) {
                 startLoading()
-                reposViewModel.getUserRepos(inputUsername.text.toString())
+                reposViewModel.getUserRepos(binding.inputUsername.text.toString())
             } else {
                 reposViewModel._listReposError.postValue(
                     getString(
@@ -67,8 +69,8 @@ class SearchFragment : Fragment() {
 
     private fun createAdapter() {
         reposAdapter = ReposAdapter(requireContext())
-        listUserRepos.layoutManager = LinearLayoutManager(context)
-        listUserRepos.adapter = reposAdapter
+        binding.listUserRepos.layoutManager = LinearLayoutManager(context)
+        binding.listUserRepos.adapter = reposAdapter
 
         reposAdapter.clickRepo = {
             val bundle = Bundle()
@@ -81,17 +83,21 @@ class SearchFragment : Fragment() {
     }
 
     private fun startLoading(){
-        inputUsername.isEnabled = false
-        buttonSearch.isEnabled = false
-        listUserRepos.isEnabled = false
-        progressLoadRepos.visibility = View.VISIBLE
+        binding.inputUsername.isEnabled = false
+        binding.buttonSearch.isEnabled = false
+        binding.listUserRepos.isEnabled = false
+        binding.progressLoadRepos.visibility = View.VISIBLE
     }
 
     private fun endLoading(){
-        inputUsername.isEnabled = true
-        buttonSearch.isEnabled = true
-        listUserRepos.isEnabled = true
-        progressLoadRepos.visibility = View.GONE
+        binding.inputUsername.isEnabled = true
+        binding.buttonSearch.isEnabled = true
+        binding.listUserRepos.isEnabled = true
+        binding.progressLoadRepos.visibility = View.GONE
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
 }
