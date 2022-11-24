@@ -8,7 +8,6 @@ import android.os.Environment
 import android.webkit.CookieManager
 import android.widget.Toast
 import com.most4dev.githubuserrepos.R
-import okhttp3.internal.userAgent
 
 class CustomDownloadManager {
 
@@ -30,7 +29,6 @@ class CustomDownloadManager {
             downloadManagerRequest.setMimeType(mimeType)
             val cookies = CookieManager.getInstance().getCookie(urlDownload)
             downloadManagerRequest.addRequestHeader("cookie", cookies)
-            downloadManagerRequest.addRequestHeader("User-Agent", userAgent)
             downloadManagerRequest.addRequestHeader("Accept", "application/vnd.github+json")
             downloadManagerRequest.setDescription(activity.getString(R.string.downloading_file))
 

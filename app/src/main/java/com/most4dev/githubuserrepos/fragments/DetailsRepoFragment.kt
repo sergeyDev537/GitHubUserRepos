@@ -15,13 +15,13 @@ import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.most4dev.githubuserrepos.*
 import com.most4dev.githubuserrepos.broadcasts.DownloadBroadcastReceiver
+import com.most4dev.githubuserrepos.databinding.FragmentDetailsRepoBinding
 import com.most4dev.githubuserrepos.downloads.CustomDownloadManager
 import com.most4dev.githubuserrepos.model.RepoDownloadedModel
 import com.most4dev.githubuserrepos.model.RepositoryModel
 import com.most4dev.githubuserrepos.viewModels.DatabaseModelFactory
 import com.most4dev.githubuserrepos.viewModels.DatabaseViewModel
 import com.most4dev.githubuserrepos.viewModels.ReposViewModel
-import kotlinx.android.synthetic.main.fragment_details_repo.*
 
 class DetailsRepoFragment : Fragment() {
 
@@ -29,6 +29,8 @@ class DetailsRepoFragment : Fragment() {
     private lateinit var reposViewModel: ReposViewModel
     private lateinit var downloadBroadcastReceiver: DownloadBroadcastReceiver
     private var fileName: String? = null
+    private var _binding: FragmentDetailsRepoBinding? = null
+    private val binding get() = _binding!!
     private val databaseViewModel: DatabaseViewModel by viewModels {
         DatabaseModelFactory((requireActivity().application as GitHubUserReposApp).repository)
     }
@@ -36,18 +38,17 @@ class DetailsRepoFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        val root = inflater.inflate(R.layout.fragment_details_repo, container, false)
-        repositoryModel =
-            requireArguments().getSerializable("GitHubRepository") as RepositoryModel
+    ): View {
+        _binding = FragmentDetailsRepoBinding.inflate(inflater, container, false)
+        repositoryModel = requireArguments().serializable("GitHubRepository")!!
         reposViewModel = ViewModelProvider(this)[ReposViewModel::class.java]
         downloadBroadcastReceiver = DownloadBroadcastReceiver()
 
         reposViewModel.fileNameError.observe(viewLifecycleOwner) {
-            constraintLayoutRepo.showSnackBar(it)
+            binding.constraintLayoutRepo.showSnackBar(it)
         }
 
-        return root
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -60,7 +61,7 @@ class DetailsRepoFragment : Fragment() {
             loadData()
             fabsClick()
         } else {
-            constraintLayoutRepo.showSnackBar(
+            binding.constraintLayoutRepo.showSnackBar(
                 getString(R.string.not_found_repo)
             )
         }
@@ -76,29 +77,28 @@ class DetailsRepoFragment : Fragment() {
 
     private fun loadData() {
         Glide.with(requireContext()).load(repositoryModel.owner?.avatar_url)
-            .into(shapeableImageViewProfile)
-        nameRepoProfile.text = repositoryModel.name
-        authorProfile.text = repositoryModel.owner?.login
-        customDescriptionRepo.text = requireContext().createDescription(repositoryModel)
+            .into(binding.shapeableImageViewProfile)
+        binding.nameRepoProfile.text = repositoryModel.name
+        binding.authorProfile.text = repositoryModel.owner?.login
+        binding.customDescriptionRepo.text = requireContext().createDescription(repositoryModel)
     }
 
     private fun fabsClick() {
-        fabOpenWeb.setOnClickListener {
+        binding.fabOpenWeb.setOnClickListener {
             openURLBrowser(requireContext(), repositoryModel.html_url)
-            floatingButtonsMenu.close(true)
+            binding.floatingButtonsMenu.close(true)
         }
 
-        fabDownload.setOnClickListener {
+        binding.fabDownload.setOnClickListener {
             reposViewModel.inspectDownload(
                 repositoryModel.owner?.login!!,
                 repositoryModel.name!!,
                 Config.archiveFormat
             ).observe(viewLifecycleOwner) {
-                if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.P){
+                if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.P) {
                     fileName = it
                     checkPermissions()
-                }
-                else{
+                } else {
                     downloadFileAndSaveList(it)
                 }
 
@@ -120,11 +120,6 @@ class DetailsRepoFragment : Fragment() {
             }
         }
         return checkRepoBoolean
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        requireActivity().unregisterReceiver(downloadBroadcastReceiver)
     }
 
     private fun downloadFileAndSaveList(fileName: String) {
@@ -156,14 +151,26 @@ class DetailsRepoFragment : Fragment() {
 
     private val activityResultLauncher =
         registerForActivityResult(
-            ActivityResultContracts.RequestPermission()){ isGranted ->
+            ActivityResultContracts.RequestPermission()
+        ) { isGranted ->
             if (isGranted) {
                 fileName?.let {
                     downloadFileAndSaveList(it)
                 }
 
             } else {
-                constraintLayoutRepo.showSnackBar(getString(R.string.permission_not_granted))
+                binding.constraintLayoutRepo.showSnackBar(getString(R.string.permission_not_granted))
             }
         }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        requireActivity().unregisterReceiver(downloadBroadcastReceiver)
+    }
+
+}
