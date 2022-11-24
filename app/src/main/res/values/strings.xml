@@ -36,6 +36,9 @@
     <!--LIST REPOSITORIES-->
     <string name="list_repositories_empty">List repositories is empty</string>
 
+    <!--PERMISSIONS-->
+    <string name="permission_not_granted">Permission not granted</string>
+
     <!--CONTENT DESCRIPTION-->
     <string name="cd_image_button_search">cd_image_button_search</string>
     <string name="cd_image_avatar_image">cd_image_avatar_image</string>

@@ -35,3 +35,7 @@ fun replaceValue(stringDefault: String): String{
     val str1 = stringDefault.substring(0, stringDefault.length-6)
     return str1.replace("{archive_format}", "zipball")
 }
+
+fun getMimeType(archiveFormat: String): String {
+    return "application/" + if (archiveFormat == "zipball") "zip" else "tar+gzip"
+}

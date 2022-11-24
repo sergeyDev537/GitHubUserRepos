@@ -5,6 +5,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.most4dev.githubuserrepos.Config
+import com.most4dev.githubuserrepos.getMimeType
 import com.most4dev.githubuserrepos.model.RepositoryModel
 import com.most4dev.githubuserrepos.retrofit.ApiInterface
 import com.most4dev.githubuserrepos.retrofit.RetrofitClient
@@ -27,9 +29,7 @@ class ReposViewModel : ViewModel() {
     val listReposError: LiveData<String>
         get() = _listReposError
 
-    private val _fileName = MutableLiveData<String>()
-    val fileName: LiveData<String>
-        get() = _fileName
+    private val fileName = MutableLiveData<String>()
 
     private val _fileNameError = MutableLiveData<String>()
     val fileNameError: LiveData<String>
@@ -38,35 +38,45 @@ class ReposViewModel : ViewModel() {
 
     fun getUserRepos(username: String) {
         viewModelScope.launch(Dispatchers.IO) {
-            val response = apiInterface.getAllUserRepos(username)
-            if (response.isSuccessful) {
-                _listRepos.postValue(response.body())
-            } else {
-                _listReposError.postValue(response.errorBody()?.string())
+            try {
+                val response = apiInterface.getAllUserRepos(username)
+                if (response.isSuccessful) {
+                    _listRepos.postValue(response.body())
+                } else {
+                    _listReposError.postValue(response.errorBody()?.string())
+                }
+            }catch (e: Exception){
+                _listReposError.postValue(e.message)
             }
+
         }
     }
 
-    fun inspectDownload(owner: String, repo: String, archiveFormat: String) {
+    fun inspectDownload(owner: String, repo: String, archiveFormat: String): LiveData<String> {
         viewModelScope.launch(Dispatchers.IO) {
-            val response = apiInterface.inspectDownload(
-                owner, repo
-            )
-            if (response.isSuccessful) {
-                val headers: Headers = response.headers()
-                val mimeType =
-                    "application/" + if (archiveFormat == "zipball") "zip" else "tar+gzip"
-                val filename: String =
-                    URLUtil.guessFileName(
-                        response.raw().request.url.toString(),
-                        headers["Content-Disposition"],
-                        mimeType
-                    )
-                _fileName.postValue(filename)
+            try {
+                val response = apiInterface.inspectDownload(
+                    owner, repo, Config.archiveFormat
+                )
+                if (response.isSuccessful) {
+                    val headers: Headers = response.headers()
+                    val mimeType = getMimeType(archiveFormat)
+                    val filename: String =
+                        URLUtil.guessFileName(
+                            response.raw().request.url.toString(),
+                            headers["Content-Disposition"],
+                            mimeType
+                        )
+                    fileName.postValue(filename)
+                }
+                else{
+                    _fileNameError.postValue(response.errorBody()?.string())
+                }
+            }catch (e: Exception){
+                _fileNameError.postValue(e.message)
             }
-            else{
-                _fileNameError.postValue(response.errorBody()?.string())
-            }
+
         }
+        return fileName
     }
 }

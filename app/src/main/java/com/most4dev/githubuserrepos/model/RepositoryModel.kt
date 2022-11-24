@@ -99,7 +99,7 @@ data class RepositoryModel(
     @SerializedName("languages_url")
     val languages_url: String? = null,
     @SerializedName("license")
-    val license: String? = null,
+    val license: Any? = null,
     @SerializedName("merges_url")
     val merges_url: String? = null,
     @SerializedName("milestones_url")
