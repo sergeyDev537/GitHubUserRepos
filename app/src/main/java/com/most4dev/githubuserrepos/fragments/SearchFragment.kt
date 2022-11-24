@@ -48,6 +48,7 @@ class SearchFragment : Fragment() {
 
         reposViewModel.listReposError.observe(viewLifecycleOwner) {
             constraintLayoutSearch.showSnackBar(it)
+            endLoading()
         }
 
         buttonSearch.setOnClickListener {

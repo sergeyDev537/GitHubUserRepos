@@ -10,7 +10,6 @@ import android.widget.Toast
 import com.most4dev.githubuserrepos.R
 import okhttp3.internal.userAgent
 
-
 class CustomDownloadManager {
 
     companion object {

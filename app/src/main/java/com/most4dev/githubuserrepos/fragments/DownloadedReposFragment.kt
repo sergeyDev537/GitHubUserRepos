@@ -50,6 +50,4 @@ class DownloadedReposFragment : Fragment() {
         recyclerDownloadedRepos.layoutManager = LinearLayoutManager(context)
         recyclerDownloadedRepos.adapter = reposDownloadedAdapter
     }
-
-
 }

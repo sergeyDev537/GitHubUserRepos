@@ -5,6 +5,7 @@ class Config {
     companion object{
 
         var BASE_URL = " https://api.github.com/"
+        var archiveFormat: String = "zipball"
 
     }
 

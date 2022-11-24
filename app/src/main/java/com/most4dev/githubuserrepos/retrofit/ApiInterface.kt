@@ -10,7 +10,11 @@ interface ApiInterface {
     @GET("users/{username}/repos")
     suspend fun getAllUserRepos(@Path("username") username: String): Response<List<RepositoryModel>>
 
-    @GET("repos/{owner}/{repo}/zipball")
-    suspend fun inspectDownload(@Path("owner") owner: String, @Path("repo") repo: String): Response<Void>
+    @GET("repos/{owner}/{repo}/{archiveFormat}")
+    suspend fun inspectDownload(
+        @Path("owner") owner: String,
+        @Path("repo") repo: String,
+        @Path("archiveFormat") archiveFormat: String
+    ): Response<Void>
 
 }
