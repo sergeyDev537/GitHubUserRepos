@@ -1,16 +1,11 @@
 package com.most4dev.githubuserrepos.viewModels
 
-import android.app.Application
-import android.util.Log
 import android.webkit.URLUtil
-import android.widget.Toast
-import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.most4dev.githubuserrepos.downloads.CustomDownloadManager
-import com.most4dev.githubuserrepos.model.GitHubRepository
+import com.most4dev.githubuserrepos.model.RepositoryModel
 import com.most4dev.githubuserrepos.retrofit.ApiInterface
 import com.most4dev.githubuserrepos.retrofit.RetrofitClient
 import kotlinx.coroutines.Dispatchers
@@ -19,13 +14,13 @@ import okhttp3.Headers
 import retrofit2.Retrofit
 
 
-class ReposViewModel(application: Application) : AndroidViewModel(application) {
+class ReposViewModel : ViewModel() {
 
-    var retrofit: Retrofit = RetrofitClient.getInstance()
+    private var retrofit: Retrofit = RetrofitClient.getInstance()
     private var apiInterface = retrofit.create(ApiInterface::class.java)
-    private val _listRepos = MutableLiveData<List<GitHubRepository>>()
+    private val _listRepos = MutableLiveData<List<RepositoryModel>>()
 
-    val listRepos: LiveData<List<GitHubRepository>>
+    val listRepos: LiveData<List<RepositoryModel>>
         get() = _listRepos
 
     val _listReposError = MutableLiveData<String>()

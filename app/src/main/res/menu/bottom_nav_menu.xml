@@ -6,4 +6,9 @@
         android:icon="@drawable/ic_search"
         android:title="@string/title_search_repositories" />
 
+    <item
+        android:id="@+id/navigation_downloaded_repositories"
+        android:icon="@drawable/ic_cloud_download"
+        android:title="@string/title_downloaded_repositories" />
+
 </menu>

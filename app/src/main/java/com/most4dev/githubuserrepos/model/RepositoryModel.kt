@@ -3,7 +3,7 @@ package com.most4dev.githubuserrepos.model
 import com.google.gson.annotations.SerializedName
 import java.io.Serializable
 
-data class GitHubRepository(
+data class RepositoryModel(
     @SerializedName("allow_forking")
     val allow_forking: Boolean? = null,
     @SerializedName("archive_url")
