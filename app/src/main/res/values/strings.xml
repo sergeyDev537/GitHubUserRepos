@@ -7,4 +7,20 @@
     <string name="title_search_repositories">Search</string>
     <string name="title_downloaded_repositories">Download</string>
 
+    <!--SEARCH FRAGMENTS-->
+    <string name="username">Username</string>
+    <string name="error_username">Enter valid username</string>
+    <string name="no_results">No results found for your search</string>
+
+    <!--LIST USER REPOSITORIES-->
+    <string name="username_label">Username: %s</string>
+    <string name="name_repository_label">Name app: %s</string>
+    <string name="language_label">Language: %s</string>
+    <string name="branch_label">Branch: %s</string>
+    <string name="description_label">Description: %s</string>
+
+    <!--CONTENT DESCRIPTION-->
+    <string name="cd_image_button_search">cd_image_button_search</string>
+    <string name="cd_image_avatar_image">cd_image_avatar_image</string>
+
 </resources>
