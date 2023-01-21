@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.navigation.fragment.findNavController
 import com.example.githubuserrepos.databinding.FragmentSearchBinding
 import com.example.githubuserrepos.presentation.adapters.UserRepositoriesAdapter
 import com.example.githubuserrepos.presentation.viewModels.RepositoryViewModel
@@ -39,26 +40,25 @@ class SearchFragment : Fragment() {
     }
 
     private fun setObserver() {
-        repositoryViewModel.listUserRepositories.observe(viewLifecycleOwner){
+        repositoryViewModel.listUserRepositories.observe(viewLifecycleOwner) {
             userRepositoryAdapter.submitList(it)
         }
-        repositoryViewModel.listUserRepositoriesError.observe(viewLifecycleOwner){
+        repositoryViewModel.listUserRepositoriesError.observe(viewLifecycleOwner) {
             binding.root.showSnackBar(it)
         }
-        repositoryViewModel.startLoading.observe(viewLifecycleOwner){
+        repositoryViewModel.startLoading.observe(viewLifecycleOwner) {
             visibleProgressBar(true)
         }
-        repositoryViewModel.endLoading.observe(viewLifecycleOwner){
+        repositoryViewModel.endLoading.observe(viewLifecycleOwner) {
             visibleProgressBar(false)
         }
     }
 
-    private fun visibleProgressBar(boolean: Boolean){
-        if (boolean){
+    private fun visibleProgressBar(boolean: Boolean) {
+        if (boolean) {
             binding.rvUserRepositories.visibility = View.GONE
             binding.loadRepositories.visibility = View.VISIBLE
-        }
-        else{
+        } else {
             binding.rvUserRepositories.visibility = View.VISIBLE
             binding.loadRepositories.visibility = View.GONE
         }
@@ -72,7 +72,11 @@ class SearchFragment : Fragment() {
 
     private fun setupAdapter() {
         userRepositoryAdapter.clickItemRepository = {
-            //TODO
+            findNavController().navigate(
+                SearchFragmentDirections.actionNavigationSearchRepositoriesToItemFragment(
+                    it
+                )
+            )
         }
         binding.rvUserRepositories.adapter = userRepositoryAdapter
     }

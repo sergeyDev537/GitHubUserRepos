@@ -33,7 +33,7 @@ class UserRepositoriesAdapter :
             clickItemRepository?.invoke(getItem(position).id)
         }
 
-        context.loadImage(repositoryItem.owner.avatar_url, binding.avatarUser)
+        context.loadImage(binding.avatarUser, repositoryItem.owner.avatar_url)
 
         binding.tvUsername.text = String.format(
             context.getString(R.string.username_label), repositoryItem.owner.login

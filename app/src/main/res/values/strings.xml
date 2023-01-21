@@ -19,8 +19,27 @@
     <string name="branch_label">Branch: %s</string>
     <string name="description_label">Description: %s</string>
 
+    <!--ITEM REPOSITORY-->
+    <string name="open_web">Open web</string>
+    <string name="download_repo">Download</string>
+    <string name="author_repository_label"><b>Author: </b>%s</string>
+    <string name="author_profile_repository_label"><b>Author profile: \n </b>%s</string>
+    <string name="author_type_repository_label"><b>Author type: </b>%s</string>
+    <string name="id_repository_label"><b>ID: </b>%s</string>
+    <string name="node_id_repository_label"><b>NodeId: </b>%s</string>
+    <string name="full_name_repository_label"><b>Full name: </b>%s</string>
+    <string name="language_repository_label"><b>Language: </b>%s</string>
+    <string name="default_branch_repository_label"><b>Default branch: </b>%s</string>
+    <string name="url_repository_label"><b>URL: </b>%s</string>
+    <string name="ssh_url_repository_label"><b>SSH URL: </b>%s</string>
+    <string name="html_url_repository_label"><b>HTML URL: </b>%s</string>
+    <string name="git_url_repository_label"><b>GIT URL: </b>%s</string>
+    <string name="clone_url_repository_label"><b>CLONE URL: </b>%s</string>
+    <string name="archive_url_repository_label"><b>ARCHIVE URL: </b>%s</string>
+
     <!--CONTENT DESCRIPTION-->
     <string name="cd_image_button_search">cd_image_button_search</string>
     <string name="cd_image_avatar_image">cd_image_avatar_image</string>
+
 
 </resources>
