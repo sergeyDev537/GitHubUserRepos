@@ -6,6 +6,7 @@ import androidx.room.PrimaryKey
 
 @Entity(tableName = "downloaded_repositories")
 data class RepositoryDbModel (
+    @PrimaryKey
     @ColumnInfo(name = "id") val id: Int,
     @ColumnInfo(name = "name") val name: String,
     @ColumnInfo(name = "clone_url") val cloneUrl: String,
