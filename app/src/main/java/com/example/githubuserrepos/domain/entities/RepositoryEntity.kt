@@ -2,7 +2,7 @@ package com.example.githubuserrepos.domain.entities
 
 data class RepositoryEntity(
     val clone_url: String,
-    val description: Any,
+    val description: String,
     val full_name: String,
     val git_url: String,
     val html_url: String,

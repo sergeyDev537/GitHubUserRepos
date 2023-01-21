@@ -1,5 +1,6 @@
 package com.example.githubuserrepos.data.mappers
 
+import com.example.githubuserrepos.data.database.model.RepositoryDbModel
 import com.example.githubuserrepos.data.network.model.RepositoryNetworkModel
 import com.example.githubuserrepos.domain.entities.OwnerEntity
 import com.example.githubuserrepos.domain.entities.RepositoryEntity
@@ -54,5 +55,59 @@ class RepositoryMapper{
             return it
         } ?: return false
     }
+
+    fun mapListDbModelToListEntity(list: List<RepositoryDbModel>) = list.map {
+        mapDbModelToEntity(it)
+    }
+
+    fun mapDbModelToEntity(repositoryDbModel: RepositoryDbModel): RepositoryEntity{
+        val ownerEntity = OwnerEntity(
+            repositoryDbModel.avatarUrl,
+            repositoryDbModel.htmlUrlOwner,
+            repositoryDbModel.idOwner,
+            repositoryDbModel.author,
+            repositoryDbModel.nodeIdOwner,
+            repositoryDbModel.typeOwner,
+            repositoryDbModel.ownerUrl
+        )
+        return RepositoryEntity(
+            repositoryDbModel.cloneUrl,
+            repositoryDbModel.description,
+            repositoryDbModel.fullName,
+            repositoryDbModel.gitUrl,
+            repositoryDbModel.htmlUrl,
+            repositoryDbModel.id,
+            repositoryDbModel.language,
+            repositoryDbModel.name,
+            repositoryDbModel.nodeId,
+            ownerEntity,
+            false,
+            repositoryDbModel.sshIrl,
+            repositoryDbModel.url
+        )
+    }
+
+    fun mapEntityToDbModel(repositoryEntity: RepositoryEntity) = RepositoryDbModel(
+        repositoryEntity.id,
+        repositoryEntity.name,
+        repositoryEntity.clone_url,
+        repositoryEntity.description,
+        repositoryEntity.full_name,
+        repositoryEntity.git_url,
+        repositoryEntity.html_url,
+        repositoryEntity.language,
+        repositoryEntity.node_id,
+        repositoryEntity.ssh_url,
+        repositoryEntity.url,
+        repositoryEntity.owner.login,
+        repositoryEntity.owner.avatar_url,
+        repositoryEntity.owner.html_url,
+        repositoryEntity.owner.id,
+        repositoryEntity.owner.node_id,
+        repositoryEntity.owner.type,
+        repositoryEntity.owner.url
+    )
+
+
 
 }
