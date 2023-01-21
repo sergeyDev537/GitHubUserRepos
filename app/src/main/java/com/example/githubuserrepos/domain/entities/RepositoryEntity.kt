@@ -1,6 +1,7 @@
 package com.example.githubuserrepos.domain.entities
 
 data class RepositoryEntity(
+    val archive_url: String,
     val clone_url: String,
     val description: String,
     val full_name: String,
@@ -13,5 +14,6 @@ data class RepositoryEntity(
     val owner: OwnerEntity,
     val `private`: Boolean,
     val ssh_url: String,
-    val url: String
+    val url: String,
+    val defaultBranch: String
 )

@@ -9,6 +9,7 @@ data class RepositoryDbModel (
     @ColumnInfo(name = "id") val id: Int,
     @ColumnInfo(name = "name") val name: String,
     @ColumnInfo(name = "clone_url") val cloneUrl: String,
+    @ColumnInfo(name = "archive_url") val archiveUrl: String,
     @ColumnInfo(name = "description") val description: String,
     @ColumnInfo(name = "full_name") val fullName: String,
     @ColumnInfo(name = "git_url") val gitUrl: String,
@@ -17,6 +18,7 @@ data class RepositoryDbModel (
     @ColumnInfo(name = "node_id") val nodeId: String,
     @ColumnInfo(name = "ssh_url") val sshIrl: String,
     @ColumnInfo(name = "url") val url: String,
+    @ColumnInfo(name = "default_branch") val defaultBranch: String,
     /*OWNER*/
     @ColumnInfo(name = "author") val author: String,
     @ColumnInfo(name = "avatar_url") val avatarUrl: String,
