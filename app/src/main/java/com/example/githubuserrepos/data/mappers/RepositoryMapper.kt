@@ -22,6 +22,7 @@ class RepositoryMapper{
             checkEmptyString(repositoryNetworkModel.owner?.url)
         )
         return RepositoryEntity(
+            checkEmptyString(repositoryNetworkModel.archive_url),
             checkEmptyString(repositoryNetworkModel.clone_url),
             checkEmptyString(repositoryNetworkModel.description),
             checkEmptyString(repositoryNetworkModel.full_name),
@@ -71,6 +72,7 @@ class RepositoryMapper{
             repositoryDbModel.ownerUrl
         )
         return RepositoryEntity(
+            repositoryDbModel.archiveUrl,
             repositoryDbModel.cloneUrl,
             repositoryDbModel.description,
             repositoryDbModel.fullName,
@@ -90,6 +92,7 @@ class RepositoryMapper{
     fun mapEntityToDbModel(repositoryEntity: RepositoryEntity) = RepositoryDbModel(
         repositoryEntity.id,
         repositoryEntity.name,
+        repositoryEntity.archive_url,
         repositoryEntity.clone_url,
         repositoryEntity.description,
         repositoryEntity.full_name,
