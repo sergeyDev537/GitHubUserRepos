@@ -1,13 +1,16 @@
 package com.example.githubuserrepos.domain.repositories
 
+import androidx.lifecycle.LiveData
 import com.example.githubuserrepos.domain.entities.RepositoryEntity
 
 interface UserRepository {
 
     suspend fun getListRepository(username: String): List<RepositoryEntity>
 
-    suspend fun getDownloadedListRepository(): List<RepositoryEntity>
+    suspend fun getDownloadedListRepository(): LiveData<List<RepositoryEntity>>
 
-    suspend fun downloadRepositoryUseCase(url: String)
+    suspend fun downloadRepositoryUseCase(repositoryEntity: RepositoryEntity)
+
+    suspend fun addDownloadedRepository(repositoryEntity: RepositoryEntity)
 
 }
