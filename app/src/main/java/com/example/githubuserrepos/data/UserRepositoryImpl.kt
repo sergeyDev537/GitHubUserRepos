@@ -25,13 +25,15 @@ class UserRepositoryImpl(private val application: Application) : UserRepository 
     private var apiInterface = retrofit.create(ApiInterface::class.java)
     private var repositoryMapper = RepositoryMapper()
     private val repositoryDao = AppDatabase.getInstance(application).repositoryDao()
+    private var listRepositories: List<RepositoryEntity> = arrayListOf()
 
     override suspend fun getListRepository(username: String): List<RepositoryEntity> {
-        apiInterface.getListRepositories(
+        listRepositories = apiInterface.getListRepositories(
             username
         ).body()?.let {
-            return repositoryMapper.mapListNetworkModelToListEntity(it)
-        } ?: return arrayListOf()
+            repositoryMapper.mapListNetworkModelToListEntity(it)
+        } ?: arrayListOf()
+        return listRepositories
     }
 
     override suspend fun getDownloadedListRepository(): LiveData<List<RepositoryEntity>> =
@@ -81,6 +83,11 @@ class UserRepositoryImpl(private val application: Application) : UserRepository 
 
     override suspend fun addDownloadedRepository(repositoryEntity: RepositoryEntity) {
         repositoryDao.addRepositoryItem(repositoryMapper.mapEntityToDbModel(repositoryEntity))
+    }
+
+    override fun getItemRepository(id: Int): RepositoryEntity {
+        return listRepositories.find { it.id == id }
+            ?: throw RuntimeException("Repository not found")
     }
 
     companion object {

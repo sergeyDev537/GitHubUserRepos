@@ -13,4 +13,6 @@ interface UserRepository {
 
     suspend fun addDownloadedRepository(repositoryEntity: RepositoryEntity)
 
+    fun getItemRepository(id: Int): RepositoryEntity
+
 }
