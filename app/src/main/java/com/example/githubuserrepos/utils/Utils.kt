@@ -4,6 +4,7 @@ import android.content.Context
 import android.net.Uri
 import android.view.View
 import android.widget.ImageView
+import android.widget.Toast
 import androidx.browser.customtabs.CustomTabsIntent
 import com.bumptech.glide.Glide
 import com.google.android.material.snackbar.Snackbar
@@ -23,4 +24,8 @@ fun View.showSnackBar(msg: String) {
 fun Context.openUrl(url: String){
     val customTabsIntent = CustomTabsIntent.Builder().build()
     customTabsIntent.launchUrl(this, Uri.parse(url))
+}
+
+fun Context.showToast(message: String){
+    Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
 }

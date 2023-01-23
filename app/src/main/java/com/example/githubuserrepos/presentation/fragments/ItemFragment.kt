@@ -1,9 +1,13 @@
 package com.example.githubuserrepos.presentation.fragments
 
+import android.Manifest
+import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.navArgs
@@ -14,6 +18,7 @@ import com.example.githubuserrepos.presentation.viewModels.RepositoryViewModel
 import com.example.githubuserrepos.utils.loadImage
 import com.example.githubuserrepos.utils.openUrl
 import com.example.githubuserrepos.utils.showSnackBar
+import com.example.githubuserrepos.utils.showToast
 
 class ItemFragment : Fragment() {
 
@@ -47,9 +52,32 @@ class ItemFragment : Fragment() {
             requireContext().openUrl(itemRepository.html_url)
         }
         binding.fabDownload.setOnClickListener {
-            //TODO
+            if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.P) {
+                checkPermissions()
+            } else {
+                repositoryViewModel.downloadRepository(itemRepository)
+            }
         }
     }
+
+    private fun checkPermissions() {
+        activityResultLauncher.launch(
+            Manifest.permission.WRITE_EXTERNAL_STORAGE
+        )
+    }
+
+    private val activityResultLauncher =
+        registerForActivityResult(
+            ActivityResultContracts.RequestPermission()
+        ) { isGranted ->
+            if (isGranted) {
+                repositoryViewModel.downloadRepository(itemRepository)
+            } else {
+                binding.constraintLayoutRepo.showSnackBar(
+                    getString(R.string.permission_not_granted)
+                )
+            }
+        }
 
     private fun setObserve() {
         repositoryViewModel.itemRepository.observe(viewLifecycleOwner) {
@@ -58,6 +86,9 @@ class ItemFragment : Fragment() {
         }
         repositoryViewModel.itemRepositoryError.observe(viewLifecycleOwner) {
             binding.root.showSnackBar(it)
+        }
+        repositoryViewModel.statusDownload.observe(viewLifecycleOwner){
+            requireContext().showToast(it)
         }
     }
 
