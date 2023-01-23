@@ -1,5 +1,6 @@
 package com.example.githubuserrepos.data
 
+import android.annotation.SuppressLint
 import android.app.Application
 import android.app.DownloadManager
 import android.content.Context
@@ -41,31 +42,30 @@ class UserRepositoryImpl(private val application: Application) : UserRepository 
             repositoryMapper.mapListDbModelToListEntity(it)
         }
 
-    override suspend fun downloadRepositoryUseCase(repositoryEntity: RepositoryEntity) {
+    @SuppressLint("Range")
+    override suspend fun downloadRepositoryUseCase(repositoryEntity: RepositoryEntity): Long {
         val response = apiInterface.inspectDownload(
             repositoryEntity.owner.login,
             repositoryEntity.name,
             Config.archiveFormat
         )
+        val url = response.raw().request.url.toString()
         val headers = response.headers()
         val mimeType = getMimeType(Config.archiveFormat)
         val filename: String =
             URLUtil.guessFileName(
-                response.raw().request.url.toString(),
+                url,
                 headers[CONTENT_DISPOSITION],
                 mimeType
             )
-        val urlDownload = repositoryEntity.archive_url
-            .replace(ARCHIVE_FORMAT, mimeType)
-            .replace(REF, "/${repositoryEntity.defaultBranch}")
-        val uri = Uri.parse(urlDownload)
-        val cookies = CookieManager.getInstance().getCookie(urlDownload)
+        val uri = Uri.parse(url)
+        val cookies = CookieManager.getInstance().getCookie(url)
 
         val downloadManagerRequest = DownloadManager.Request(uri)
         downloadManagerRequest.setMimeType(mimeType)
         downloadManagerRequest.addRequestHeader(COOKIE_HEADER, cookies)
         downloadManagerRequest.addRequestHeader(ACCEPT_HEADER, ACCEPT_VALUE)
-        downloadManagerRequest.setDescription(application.getString(R.string.downloading_file))
+        downloadManagerRequest.setDescription(application.getString(R.string.downloading))
         downloadManagerRequest.setTitle(filename)
         downloadManagerRequest.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE)
         downloadManagerRequest.setDestinationInExternalPublicDir(
@@ -73,8 +73,8 @@ class UserRepositoryImpl(private val application: Application) : UserRepository 
             filename
         )
         val downloadManager =
-            application.getSystemService(Context.DOWNLOAD_SERVICE) as DownloadManager?
-        downloadManager?.enqueue(downloadManagerRequest)
+            application.getSystemService(Context.DOWNLOAD_SERVICE) as DownloadManager
+        return downloadManager.enqueue(downloadManagerRequest)
     }
 
     private fun getMimeType(archiveFormat: String): String {
@@ -97,8 +97,6 @@ class UserRepositoryImpl(private val application: Application) : UserRepository 
         private const val ZIPBALL = "zipball"
         private const val ZIP = "zip"
         private const val TAR = "tar+gzip"
-        private const val ARCHIVE_FORMAT = "{archive_format}"
-        private const val REF = "{/ref}"
         private const val COOKIE_HEADER = "cookie"
         private const val ACCEPT_HEADER = "Accept"
         private const val ACCEPT_VALUE = "application/vnd.github+json"
