@@ -92,10 +92,10 @@ class ItemFragment : Fragment() {
         }
         repositoryViewModel.startDownload.observe(viewLifecycleOwner){
             binding.fabMenu.close(true)
-            binding.fabDownload.isClickable = false
+            binding.fabDownload.isEnabled = false
         }
         repositoryViewModel.endDownload.observe(viewLifecycleOwner){
-            binding.fabDownload.isClickable = true
+            binding.fabDownload.isEnabled = true
         }
     }
 

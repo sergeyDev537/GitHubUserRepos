@@ -168,12 +168,18 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/ic_web"
+            app:fab_colorNormal="@color/teal_200"
+            app:fab_colorPressed="@color/teal_700"
+            app:fab_colorRipple="@color/teal_200"
             fab:fab_label="@string/open_web" />
 
         <com.github.clans.fab.FloatingActionButton
             android:id="@+id/fab_download"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            app:fab_colorNormal="@color/teal_200"
+            app:fab_colorPressed="@color/teal_700"
+            app:fab_colorRipple="@color/teal_200"
             android:src="@drawable/ic_cloud_download"
             fab:fab_label="@string/download_repo" />
 
