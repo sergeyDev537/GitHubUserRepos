@@ -7,7 +7,7 @@ interface UserRepository {
 
     suspend fun getListRepository(username: String): List<RepositoryEntity>
 
-    suspend fun getDownloadedListRepository(): LiveData<List<RepositoryEntity>>
+    fun getDownloadedListRepository(): LiveData<List<RepositoryEntity>>
 
     suspend fun downloadRepositoryUseCase(repositoryEntity: RepositoryEntity): Long
 
