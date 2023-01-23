@@ -3,7 +3,6 @@ package com.example.githubuserrepos.presentation.fragments
 import android.Manifest
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -89,7 +88,25 @@ class ItemFragment : Fragment() {
         }
         repositoryViewModel.statusDownload.observe(viewLifecycleOwner){
             requireContext().showToast(it)
+            checkStatusSuccessful(it)
         }
+        repositoryViewModel.startDownload.observe(viewLifecycleOwner){
+            binding.fabMenu.close(true)
+            binding.fabDownload.isClickable = false
+        }
+        repositoryViewModel.endDownload.observe(viewLifecycleOwner){
+            binding.fabDownload.isClickable = true
+        }
+    }
+
+    private fun checkStatusSuccessful(status: String) {
+        if (status == requireContext().getString(R.string.download_successfully)){
+            addItemInDb()
+        }
+    }
+
+    private fun addItemInDb() {
+        repositoryViewModel.addItemInDb(repositoryEntity = itemRepository)
     }
 
     private fun setData(repositoryEntity: RepositoryEntity) {

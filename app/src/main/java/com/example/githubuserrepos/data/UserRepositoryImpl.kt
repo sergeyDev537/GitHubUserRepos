@@ -37,7 +37,7 @@ class UserRepositoryImpl(private val application: Application) : UserRepository 
         return listRepositories
     }
 
-    override suspend fun getDownloadedListRepository(): LiveData<List<RepositoryEntity>> =
+    override fun getDownloadedListRepository(): LiveData<List<RepositoryEntity>> =
         Transformations.map(repositoryDao.getListRepositories()) {
             repositoryMapper.mapListDbModelToListEntity(it)
         }

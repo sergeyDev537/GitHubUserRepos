@@ -14,6 +14,6 @@ interface RepositoryDao {
     fun getListRepositories(): LiveData<List<RepositoryDbModel>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun addRepositoryItem(repositoryDbModel: RepositoryDbModel)
+    suspend fun addRepositoryItem(repositoryDbModel: RepositoryDbModel)
 
 }

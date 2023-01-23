@@ -18,9 +18,14 @@
         android:id="@+id/itemFragment"
         android:name="com.example.githubuserrepos.presentation.fragments.ItemFragment"
         android:label="Item Repository"
-        tools:layout="@layout/fragment_item" >
+        tools:layout="@layout/fragment_item">
         <argument
             android:name="repositoryId"
             app:argType="integer" />
     </fragment>
+    <fragment
+        android:id="@+id/navigation_downloaded_repositories"
+        android:name="com.example.githubuserrepos.presentation.fragments.ListDbFragment"
+        android:label="Downloaded repositories"
+        tools:layout="@layout/fragment_list_db" />
 </navigation>

@@ -12,9 +12,8 @@ import androidx.lifecycle.viewModelScope
 import com.example.githubuserrepos.R
 import com.example.githubuserrepos.data.UserRepositoryImpl
 import com.example.githubuserrepos.domain.entities.RepositoryEntity
-import com.example.githubuserrepos.domain.usecases.DownloadRepositoryUseCase
-import com.example.githubuserrepos.domain.usecases.GetItemRepositoryUseCase
-import com.example.githubuserrepos.domain.usecases.GetListRepositoryUseCase
+import com.example.githubuserrepos.domain.usecases.*
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class RepositoryViewModel(
@@ -28,6 +27,9 @@ class RepositoryViewModel(
     private val getListRepositoryUseCase = GetListRepositoryUseCase(userRepository)
     private val getItemRepositoryUseCase = GetItemRepositoryUseCase(userRepository)
     private val downloadRepositoryUseCase = DownloadRepositoryUseCase(userRepository)
+    private val addRepositoryItemDbUseCase = AddRepositoryItemDbUseCase(userRepository)
+    private val getDownloadedListRepositoryUseCase =
+        GetDownloadedListRepositoryUseCase(userRepository)
 
     private var _listUserRepositories = MutableLiveData<List<RepositoryEntity>>()
     val listUserRepositories: LiveData<List<RepositoryEntity>>
@@ -53,9 +55,20 @@ class RepositoryViewModel(
     val itemRepositoryError: LiveData<String>
         get() = _itemRepositoryError
 
-    private var _statusDownload = MutableLiveData<String>()
+    private var _statusDownload = SingleLiveEvent<String>()
     val statusDownload: LiveData<String>
         get() = _statusDownload
+
+    private var _startDownload = MutableLiveData<Unit>()
+    val startDownload: LiveData<Unit>
+        get() = _startDownload
+
+    private var _endDownload = MutableLiveData<Unit>()
+    val endDownload: LiveData<Unit>
+        get() = _endDownload
+
+
+    val listUserRepositoriesDb = getDownloadedListRepositoryUseCase.invoke()
 
     fun getListUserRepositories(username: String) {
         if (parseUserName(username)) {
@@ -86,17 +99,17 @@ class RepositoryViewModel(
         return username.isNotEmpty()
     }
 
-    fun getItemRepository(id: Int){
+    fun getItemRepository(id: Int) {
         try {
             _itemRepository.value = getItemRepositoryUseCase.invoke(id)
-        }
-        catch (e: Exception){
+        } catch (e: Exception) {
             _itemRepositoryError.value = e.message
         }
     }
 
-    fun downloadRepository(repositoryEntity: RepositoryEntity){
-        viewModelScope.launch {
+    fun downloadRepository(repositoryEntity: RepositoryEntity) {
+        viewModelScope.launch(Dispatchers.IO) {
+            startDownloadAndSaveDb()
             val dm = context.getSystemService(Context.DOWNLOAD_SERVICE) as DownloadManager
             val downloadId = downloadRepositoryUseCase.invoke(repositoryEntity)
             val query = DownloadManager.Query().setFilterById(downloadId)
@@ -131,7 +144,7 @@ class RepositoryViewModel(
             val msg: String = statusMessage(status)
             if (msg != lastMsg) {
                 lastMsg = msg
-                _statusDownload.value = lastMsg
+                _statusDownload.postValue(lastMsg)
             }
             cursor.close()
         }
@@ -140,7 +153,9 @@ class RepositoryViewModel(
 
     private fun statusMessage(status: Int): String {
         val msg: String = when (status) {
-            DownloadManager.STATUS_FAILED -> context.getString(R.string.download_failed)
+            DownloadManager.STATUS_FAILED -> {
+                context.getString(R.string.download_failed)
+            }
             DownloadManager.STATUS_PAUSED -> context.getString(R.string.download_paused)
             DownloadManager.STATUS_PENDING -> context.getString(R.string.download_pending)
             DownloadManager.STATUS_RUNNING -> context.getString(R.string.downloading)
@@ -150,5 +165,19 @@ class RepositoryViewModel(
         return msg
     }
 
+    fun addItemInDb(repositoryEntity: RepositoryEntity) {
+        viewModelScope.launch(Dispatchers.IO) {
+            addRepositoryItemDbUseCase.invoke(repositoryEntity)
+            endDownloadAndSaveDb()
+        }
+    }
+
+    private fun startDownloadAndSaveDb() {
+        _startDownload.postValue(Unit)
+    }
+
+    private fun endDownloadAndSaveDb() {
+        _endDownload.postValue(Unit)
+    }
 
 }
